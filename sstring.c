@@ -6,7 +6,7 @@
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 03:20:17 by aelbour           #+#    #+#             */
-/*   Updated: 2025/03/25 03:47:11 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/04 09:01:52 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,15 @@ void	ft_putstr_fd(char *s, int fd)
 {
 	if (s)
 		write(fd, s, ft_strlen(s));
+}
+
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }

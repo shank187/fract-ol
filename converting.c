@@ -6,7 +6,7 @@
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 00:41:21 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/02 17:32:05 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/04 15:14:41 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,3 +62,15 @@ double	ft_atof(char *s)
 		t += fractional_part(s, ++i);
 	return(sign * t);
 }
+
+t_complex pixel_to_complex(int x, int y, t_fractol *f) {
+    t_complex c;
+    double scale_x = (f->max_real - f->min_real) / (double)f->width;
+    double scale_y = (f->max_imag - f->min_imag) / (double)f->height;
+
+    c.real = f->min_real + (x + 0.5) * scale_x;
+    c.imaginary = f->min_imag + (y + 0.5) * scale_y;
+
+    return c;
+}
+
