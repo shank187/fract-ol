@@ -56,7 +56,7 @@ typedef struct s_3d {
 }           t_3d;
 
 size_t	ft_strlen(const char *s);
-
+void render_fractal(t_fractol *f);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_putstr_fd(char *s, int fd);
 double	ft_atof(char *s);
@@ -65,6 +65,8 @@ t_complex complex_add(t_complex num1, t_complex num2);
 t_complex complex_square(t_complex num);
 int fractal_suite(t_complex value, t_fractol *fractol);
 t_complex pixel_to_complex(int x, int y, t_fractol *fractol);
+void key_hook(mlx_key_data_t keycode, void *param);
+void scroll_hook(double xdelta, double ydelta, void *param);
 
 
 #endif

@@ -1,44 +1,38 @@
-# Compiler
-CC = cc
-
-# Compiler Flags
-CFLAGS = -Wall -Wextra -Werror -Ofast -I./ -I/home/aelbour/MLX42/include
-
-# MLX42 & GLFW Paths
-MLX42_DIR = /home/aelbour/MLX42
-GLFW_DIR = /home/aelbour/glfw_install
-
-# Libraries
-LIBS = -L$(MLX42_DIR)/build -lmlx42 -L$(GLFW_DIR)/lib -lglfw -ldl -pthread -lX11 -lGL -lm
-
-# Source & Object Files (all .c in current dir)
-SRCS = $(wildcard *.c)
-OBJS = $(SRCS:.c=.o)
-
-# Executable Name
-NAME = fractol
-
-# Default Rule
+# **************************************************************************** #
+#                                  FRACTOL                                     #
+# **************************************************************************** #
+# Name of the executable
+NAME    := fractol
+# Compiler and Flags
+CC      := cc
+MLX42_DIR := /mnt/homes/aelbour/MLX42/MLX42
+MLX42_INC := $(MLX42_DIR)/include
+CFLAGS  :=  -I$(MLX42_INC)
+# Sources and Objects
+SRCS    := fractol.c  complex_oper.c converting.c parsing.c sstring.c events.c
+OBJS    := $(SRCS:.c=.o)
+# MLX42 Library Path
+MLX42_LIB := $(MLX42_DIR)/build/libmlx42.a
+# GLFW Library Path (direct path)
+GLFW_LIB := $(MLX42_DIR)/build/_deps/glfw-build/src/libglfw3.a
+# Other dependencies
+LIBS    := -ldl -pthread -lm
+# macOS specific frameworks for MLX42
+LDFLAGS := $(MLX42_LIB) $(GLFW_LIB) $(LIBS) -framework Cocoa -framework OpenGL -framework IOKit
+# Default rule
 all: $(NAME)
-
-# Compile Object Files
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@ && echo "Compiled: $(notdir $<)"
-
-# Link Executable
+# Linking
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) $(LIBS) -o $(NAME) && echo "Linked: $(NAME)"
-
-# Clean Object Files
+	$(CC) $(OBJS) $(LDFLAGS) -o $(NAME)
+# Compilation rule
+%.o: %.c fractol.h
+	$(CC) $(CFLAGS) -c $< -o $@
+# Cleaning object files
 clean:
 	rm -f $(OBJS)
-
-# Full Clean (remove executable too)
+# Cleaning everything
 fclean: clean
 	rm -f $(NAME)
-
-# Recompile Everything
+# Rebuild everything
 re: fclean all
-
-# Phony Targets
 .PHONY: all clean fclean re
