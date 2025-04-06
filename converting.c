@@ -6,12 +6,25 @@
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 00:41:21 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/05 14:11:54 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/06 19:47:22 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
+void	*ft_memset(void *b, int c, size_t len)
+{
+	unsigned char	*p;
+	size_t			i;
+
+	p = (unsigned char *) b;
+	i = 0;
+	while (i < len)
+	{
+		p[i++] = (unsigned char) c;
+	}
+	return (b);
+}
 
 static void	ft_get_sign(double *s, long *i, const char *str)
 {

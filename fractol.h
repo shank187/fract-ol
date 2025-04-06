@@ -26,12 +26,9 @@ typedef struct s_fractol
 	/*** Fractal Type & Parameters ***/
 	int			fractal_type;   // 0 = Mandelbrot, 1 = Julia, 2 = Other
 	int			max_iter;       // Maximum iterations for fractal calculations
-	double  	zoom;           // Zoom factor
-	double  	move_x;         // Horizontal movement
-	double  	move_y;         // Vertical movement
 	int			height;
 	int			width;
-
+	// int			pixel_step;
 	/*** Complex Plane ***/
 	double		min_real;       // Minimum real part of complex plane
 	double		max_real;       // Maximum real part
@@ -47,13 +44,24 @@ typedef struct s_fractol
 }   t_fractol;
 
 
+typedef struct s_rend
+{
+	int x;
+	int y;
+	double scale_x;
+	double scale_y;
+} t_rend;
 
-typedef struct s_3d {
-    double  h;
-    double  dx;
-    double  dy;
-    int     clr;
-}           t_3d;
+
+typedef struct s_color
+{
+	int r;
+	int g;
+	int b;
+	int a;
+} t_color;
+
+
 
 size_t	ft_strlen(const char *s);
 void render_fractal(t_fractol *f);
@@ -63,10 +71,11 @@ double	ft_atof(char *s);
 int		is_valid_float(char *s);
 t_complex complex_add(t_complex num1, t_complex num2);
 t_complex complex_square(t_complex num);
-int fractal_suite(t_complex value, t_fractol *fractol);
+// int fractal_suite(t_complex value, t_fractol *fractol);
 t_complex pixel_to_complex(int x, int y, t_fractol *fractol);
 void key_hook(mlx_key_data_t keycode, void *param);
 void scroll_hook(double xdelta, double ydelta, void *param);
+void	*ft_memset(void *b, int c, size_t len);
 
 
 #endif
