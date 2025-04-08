@@ -1,38 +1,48 @@
-# **************************************************************************** #
-#                                  FRACTOL                                     #
-# **************************************************************************** #
-# Name of the executable
-NAME    := fractol
-# Compiler and Flags
-CC      := cc
-MLX42_DIR := /mnt/homes/aelbour/MLX42/MLX42
-MLX42_INC := $(MLX42_DIR)/include
-CFLAGS  :=  -I$(MLX42_INC) 
-# Sources and Objects
-SRCS    := fractol.c  converting.c  sstring.c events.c 
-OBJS    := $(SRCS:.c=.o)
-# MLX42 Library Path
-MLX42_LIB := $(MLX42_DIR)/build/libmlx42.a
-# GLFW Library Path (direct path)
-GLFW_LIB := $(MLX42_DIR)/build/_deps/glfw-build/src/libglfw3.a
-# Other dependencies
-LIBS    := -ldl -pthread -lm
-# macOS specific frameworks for MLX42
-LDFLAGS := $(MLX42_LIB) $(GLFW_LIB) $(LIBS) -framework Cocoa -framework OpenGL -framework IOKit
-# Default rule
+NAME        := fractol
+BONUS       := fractol_bonus
+
+CC          := cc
+MLX42_DIR   := /mnt/homes/aelbour/MLX42/MLX42
+MLX42_INC   := $(MLX42_DIR)/include
+CFLAGS      := -I$(MLX42_INC) -Imandatory -Ibonus
+
+MAND_SRCS   := mandatory/fractol.c \
+               mandatory/converting.c \
+               mandatory/sstring.c \
+               mandatory/events.c
+MAND_OBJS   := $(MAND_SRCS:.c=.o)
+
+BONUS_SRCS  := bonus/fractol_bonus.c \
+               bonus/converting_bonus.c \
+               bonus/sstring_bonus.c \
+               bonus/events_bonus.c
+BONUS_OBJS  := $(BONUS_SRCS:.c=.o)
+
+MLX42_LIB   := $(MLX42_DIR)/build/libmlx42.a
+GLFW_LIB    := $(MLX42_DIR)/build/_deps/glfw-build/src/libglfw3.a
+LIBS        := -ldl -pthread -lm
+LDFLAGS     := $(MLX42_LIB) $(GLFW_LIB) $(LIBS) \
+               -framework Cocoa -framework OpenGL -framework IOKit
+
+.PHONY: all bonus clean fclean re
+
 all: $(NAME)
-# Linking
-$(NAME): $(OBJS)
-	$(CC) $(OBJS) $(LDFLAGS) -o $(NAME)
-# Compilation rule
-%.o: %.c fractol.h
+
+$(NAME): $(MAND_OBJS)
+	$(CC) $(CFLAGS) $(MAND_OBJS) $(LDFLAGS) -o $(NAME)
+
+bonus: $(BONUS)
+
+$(BONUS): $(BONUS_OBJS)
+	$(CC) $(CFLAGS) $(BONUS_OBJS) $(LDFLAGS) -o $(BONUS)
+
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
-# Cleaning object files
+
 clean:
-	rm -f $(OBJS)
-# Cleaning everything
+	rm -f $(MAND_OBJS) $(BONUS_OBJS)
+
 fclean: clean
-	rm -f $(NAME)
-# Rebuild everything
+	rm -f $(NAME) $(BONUS)
+
 re: fclean all
-.PHONY: all clean fclean re

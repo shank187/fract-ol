@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   events.c                                           :+:      :+:    :+:   */
+/*   events_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 10:29:47 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/08 17:37:39 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/08 18:45:32 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "fractol_bonus.h"
 
 void	zoom_at_center(t_fractol *f, double zoom_factor)
 {
@@ -51,8 +51,12 @@ void	handle_moves(mlx_key_data_t key, t_fractol *f)
 		f->min_real += (f->max_real - f->min_real) * 0.04;
 		f->max_real += (f->max_real - f->min_real) * 0.04;
 	}
-	if (key.key == MLX_KEY_ESCAPE)
-		ft_clean(f, "GOODBUE\n");
+	else if (key.key == MLX_KEY_C && f->color_shift < 32)
+		f->color_shift += 1;
+	else if (key.key == MLX_KEY_C && f->color_shift >= 32)
+		f->color_shift = 0;
+	else if (key.key == MLX_KEY_ESCAPE)
+		ft_clean(f, "GOODBYE\n");
 }
 
 void	key_hook(mlx_key_data_t key, void *param)

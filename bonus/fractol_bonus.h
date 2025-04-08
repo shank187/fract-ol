@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   fractol_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 16:56:34 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/08 16:59:27 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/08 18:37:54 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@
 # include <float.h>
 # include <stdio.h>
 # include <math.h>
-#include <MLX42/MLX42.h>
+# include <MLX42/MLX42.h>
 
 
-# define EPSILON 1e-9
 # define MIN_VALUE -2.0
 # define MAX_VALUE 2.0
 # define INCREMENT 0.01
@@ -51,10 +50,8 @@ typedef struct s_fractol
 	double		max_real;
 	double		min_imag;
 	double		max_imag;
-	t_complex	c_julia;
-	int			color;
 	int			color_shift;
-	double		last_magnitude;
+	t_complex	c_julia;
 }	t_fractol;
 
 typedef struct s_rend

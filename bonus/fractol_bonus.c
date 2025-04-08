@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.c                                          :+:      :+:    :+:   */
+/*   fractol_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 03:19:36 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/08 16:41:08 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/08 19:49:47 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "fractol_bonus.h"
 
 void	reset_fractal(t_fractol *f, int who, char **av)
 {
@@ -23,14 +23,10 @@ void	reset_fractal(t_fractol *f, int who, char **av)
 	f->mlx = NULL;
 	f->mlx = mlx_init(f->width, f->height, av[1], 0);
 	if (!f->mlx)
-	{
 		ft_clean(NULL, "Failed to initialize mlx\n");
-	}
 	f->img = mlx_new_image(f->mlx, f->width, f->height);
 	if (!f->img)
-	{
 		ft_clean(f, "Failed to create image\n");
-	}
 	f->fractal_type = who;
 	f->max_iter = 100;
 	f->min_real = -2.0;
@@ -38,6 +34,7 @@ void	reset_fractal(t_fractol *f, int who, char **av)
 	f->min_imag = -2.0;
 	f->max_imag = 2.0;
 	f->step = 1;
+	f->color_shift = 0;
 }
 
 void	get_color_rgb(t_fractol *f, int i, int x, int y)
@@ -55,16 +52,17 @@ void	get_color_rgb(t_fractol *f, int i, int x, int y)
 		c.r = (unsigned int)(9 * (1 - t) * t * t * t * 255);
 		c.g = (unsigned int)(15 * (1 - t) * (1 - t) * t * t * 255);
 		c.b = (unsigned int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
-		c.a = 255;
 	}
 	c.color = (c.r << 24) | (c.g << 16) | (c.b << 8) | c.a;
-	iy = y;
-	while (iy < y + f->step && iy < f->height)
+	if (i != f->max_iter)
+		c.color = (c.color << f->color_shift) | (c.color >> (32 - f->color_shift));
+	c.color = (c.color & 0xFFFFFF00) | 255;
+	iy = y - 1;
+	while (++iy < y + f->step && iy < f->height)
 	{
 		ix = x;
 		while (ix < x + f->step && ix < f->width)
 			mlx_put_pixel(f->img, ix++, iy, c.color);
-		iy++;
 	}
 }
 
@@ -107,10 +105,6 @@ void	render_fractal(t_fractol *f)
 	}
 	mlx_image_to_window(f->mlx, f->img, 0, 0);
 }
-
-// void func (void)
-// {system("leaks fractol");}
-	// atexit(func);
 
 int	main(int ac, char **av)
 {
