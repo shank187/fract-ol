@@ -7,9 +7,9 @@ NAME    := fractol
 CC      := cc
 MLX42_DIR := /mnt/homes/aelbour/MLX42/MLX42
 MLX42_INC := $(MLX42_DIR)/include
-CFLAGS  :=  -I$(MLX42_INC)
+CFLAGS  :=  -I$(MLX42_INC) 
 # Sources and Objects
-SRCS    := fractol.c  complex_oper.c converting.c parsing.c sstring.c events.c
+SRCS    := fractol.c  converting.c  sstring.c events.c 
 OBJS    := $(SRCS:.c=.o)
 # MLX42 Library Path
 MLX42_LIB := $(MLX42_DIR)/build/libmlx42.a
