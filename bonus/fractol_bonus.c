@@ -6,7 +6,7 @@
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 03:19:36 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/08 19:49:47 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/09 14:53:40 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ void	reset_fractal(t_fractol *f, int who, char **av)
 	f->c_julia = (t_complex){0.0, 0.0};
 	if (who == 1)
 		f->c_julia = (t_complex){ft_atof(av[2]), ft_atof(av[3])};
-	f->height = 700;
-	f->width = 700;
-	f->img = NULL;
-	f->mlx = NULL;
-	f->mlx = mlx_init(f->width, f->height, av[1], 0);
+	f->height = 600;
+	f->width = 600;
+	f->argv = av;
+	if (!f->mlx)
+		f->mlx = mlx_init(f->width, f->height, av[1], 0);
 	if (!f->mlx)
 		ft_clean(NULL, "Failed to initialize mlx\n");
-	f->img = mlx_new_image(f->mlx, f->width, f->height);
+	if (!f->img)
+		f->img = mlx_new_image(f->mlx, f->width, f->height);
 	if (!f->img)
 		ft_clean(f, "Failed to create image\n");
 	f->fractal_type = who;
@@ -34,7 +35,7 @@ void	reset_fractal(t_fractol *f, int who, char **av)
 	f->min_imag = -2.0;
 	f->max_imag = 2.0;
 	f->step = 1;
-	f->color_shift = 0;
+	f->co_shift = 0;
 }
 
 void	get_color_rgb(t_fractol *f, int i, int x, int y)
@@ -55,7 +56,7 @@ void	get_color_rgb(t_fractol *f, int i, int x, int y)
 	}
 	c.color = (c.r << 24) | (c.g << 16) | (c.b << 8) | c.a;
 	if (i != f->max_iter)
-		c.color = (c.color << f->color_shift) | (c.color >> (32 - f->color_shift));
+		c.color = (c.color << f->co_shift) | (c.color >> (32 - f->co_shift));
 	c.color = (c.color & 0xFFFFFF00) | 255;
 	iy = y - 1;
 	while (++iy < y + f->step && iy < f->height)
@@ -112,10 +113,16 @@ int	main(int ac, char **av)
 	t_fractol	*f;
 
 	f = &fractol;
-	if ((ac != 2 && ac != 4) || (!ft_strncmp(av[1], "mandelbrot", 20)
-			&& ac != 2) || (!ft_strncmp(av[1], "julia", 20) && ac != 4))
+	f->img = NULL;
+	f->mlx = NULL;
+	if (ac == 4 && !ft_strncmp(av[1], "julia", 20))
+		reset_fractal(f, 1, av);
+	else if (ac == 2 && !ft_strncmp(av[1], "mandelbrot", 20))
+		reset_fractal(f, 0, av);
+	else if (ac == 2 && !ft_strncmp(av[1], "burning ship", 20))
+		reset_fractal(f, 2, av);
+	else
 		return (ft_putstr_fd(WRONG_ARG, 2), 1);
-	reset_fractal(f, !ft_strncmp(av[1], "julia", 20), av);
 	render_fractal(f);
 	mlx_key_hook(f -> mlx, &key_hook, f);
 	mlx_scroll_hook(f->mlx, &scroll_hook, f);

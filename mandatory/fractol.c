@@ -6,7 +6,7 @@
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 03:19:36 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/08 18:27:05 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/09 14:50:46 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	reset_fractal(t_fractol *f, int who, char **av)
 	if (who == 1)
 		f->c_julia = (t_complex){ft_atof(av[2]), ft_atof(av[3])};
 	f->height = 700;
-	f->width = 700;
+	f->width = 700000000;
 	f->img = NULL;
 	f->mlx = NULL;
 	f->mlx = mlx_init(f->width, f->height, av[1], 0);
@@ -32,7 +32,7 @@ void	reset_fractal(t_fractol *f, int who, char **av)
 		ft_clean(f, "Failed to create image\n");
 	}
 	f->fractal_type = who;
-	f->max_iter = 80;
+	f->max_iter = 100;
 	f->min_real = -2.0;
 	f->max_real = 2.0;
 	f->min_imag = -2.0;
@@ -104,11 +104,12 @@ int	main(int ac, char **av)
 	t_fractol	*f;
 
 	f = &fractol;
-	if ((ac != 2 && ac != 4) || (!ft_strncmp(av[1], "mandelbrot", 20)
-			&& ac != 2) || (!ft_strncmp(av[1], "julia", 20) && ac != 4))
+	if (ac == 4 && !ft_strncmp(av[1], "julia", 20))
+		reset_fractal(f, 1, av);
+	else if (ac == 2 && !ft_strncmp(av[1], "mandelbrot", 20))
+		reset_fractal(f, 0, av);
+	else
 		return (ft_putstr_fd(WRONG_ARG, 2), 1);
-	reset_fractal(f, !ft_strncmp(av[1], "julia", 20), av);
-	render_fractal(f);
 	render_fractal(f);
 	mlx_key_hook(f -> mlx, &key_hook, f);
 	mlx_scroll_hook(f->mlx, &scroll_hook, f);

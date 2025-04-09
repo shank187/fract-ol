@@ -6,7 +6,7 @@
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 10:29:47 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/08 18:45:32 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/09 14:49:30 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,34 +29,44 @@ void	zoom_at_center(t_fractol *f, double zoom_factor)
 	f->max_imag = center_imag + height / 2.0;
 }
 
+void	helper_keyz(mlx_key_data_t key, t_fractol *f)
+{
+	if (key.key == MLX_KEY_C && f->co_shift < 32)
+		f->co_shift += 1;
+	else if (key.key == MLX_KEY_C && f->co_shift >= 32)
+		f->co_shift = 0;
+	else if (key.key == MLX_KEY_ESCAPE)
+	{
+		ft_putstr_fd("GOODBYE\n", 1);
+		ft_clean(f, NULL);
+	}
+	else if (key.key == MLX_KEY_ENTER)
+		reset_fractal(f, f->fractal_type, f->argv);
+}
+
 void	handle_moves(mlx_key_data_t key, t_fractol *f)
 {
 	if (key.key == MLX_KEY_UP)
 	{
-		f->min_imag -= (f->max_imag - f->min_imag) * 0.04;
-		f->max_imag -= (f->max_imag - f->min_imag) * 0.04;
+		f->min_imag -= (f->max_imag - f->min_imag) * 0.035;
+		f->max_imag -= (f->max_imag - f->min_imag) * 0.035;
 	}
 	else if (key.key == MLX_KEY_DOWN)
 	{
-		f->min_imag += (f->max_imag - f->min_imag) * 0.04;
-		f->max_imag += (f->max_imag - f->min_imag) * 0.04;
+		f->min_imag += (f->max_imag - f->min_imag) * 0.035;
+		f->max_imag += (f->max_imag - f->min_imag) * 0.035;
 	}
 	else if (key.key == MLX_KEY_LEFT)
 	{
-		f->min_real -= (f->max_real - f->min_real) * 0.04;
-		f->max_real -= (f->max_real - f->min_real) * 0.04;
+		f->min_real -= (f->max_real - f->min_real) * 0.035;
+		f->max_real -= (f->max_real - f->min_real) * 0.035;
 	}
 	else if (key.key == MLX_KEY_RIGHT)
 	{
-		f->min_real += (f->max_real - f->min_real) * 0.04;
-		f->max_real += (f->max_real - f->min_real) * 0.04;
+		f->min_real += (f->max_real - f->min_real) * 0.035;
+		f->max_real += (f->max_real - f->min_real) * 0.035;
 	}
-	else if (key.key == MLX_KEY_C && f->color_shift < 32)
-		f->color_shift += 1;
-	else if (key.key == MLX_KEY_C && f->color_shift >= 32)
-		f->color_shift = 0;
-	else if (key.key == MLX_KEY_ESCAPE)
-		ft_clean(f, "GOODBYE\n");
+	helper_keyz(key, f);
 }
 
 void	key_hook(mlx_key_data_t key, void *param)

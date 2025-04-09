@@ -6,7 +6,7 @@
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 10:29:47 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/08 18:26:19 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/09 14:54:17 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ void	key_hook(mlx_key_data_t key, void *param)
 
 	f = (t_fractol *)param;
 	if (key.key == MLX_KEY_ESCAPE)
-		ft_clean(f, "GOODBYE\n");
+	{
+		ft_putstr_fd("GOODBYE.", 1);
+		ft_clean(f, NULL);
+	}
 	render_fractal(f);
 }
-
 
 void	scroll_hook(double xdelta, double ydelta, void *param)
 {

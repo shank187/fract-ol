@@ -6,7 +6,7 @@
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 00:41:21 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/08 18:33:56 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/09 11:22:48 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,18 @@ t_complex	calcul_func(t_fractol *f, t_complex *last, t_complex point)
 		z.rel = s.rel + point.rel;
 		z.img = s.img + point.img;
 	}
-	else
+	else if (f->fractal_type == 1)
 	{
 		s.rel = (last->rel * last -> rel) - (last->img * last->img);
 		s.img = 2.0 * last->rel * last->img;
 		z.rel = s.rel + f->c_julia.rel;
 		z.img = s.img + f->c_julia.img;
+	}
+	else
+	{
+		z.rel = (fabs(last->rel) * fabs(last->rel))
+			-(fabs(last->img) * fabs(last->img)) + point.rel;
+		z.img = 2 * fabs(last->rel) * fabs(last->img) + point.img;
 	}
 	*last = z;
 	return (z);

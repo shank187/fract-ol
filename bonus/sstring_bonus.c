@@ -6,21 +6,23 @@
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 03:20:17 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/08 19:58:48 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/09 11:04:04 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol_bonus.h"
 
-void	ft_clean(t_fractol *f, const char *s)
+void	ft_clean(t_fractol *f, char *s)
 {
 	if (s)
-		perror(s);
-	// if (f->mlx)
-	// 	mlx_close_window(f->mlx);
-	// if (f->img)
-		// mlx_delete_image(f->mlx, f->img);
-	mlx_terminate(f->mlx);
+		ft_putstr_fd(s, 2);
+	if (f && f->img)
+		mlx_delete_image(f->mlx, f->img);
+	if (f && f->mlx)
+	{
+		mlx_close_window(f->mlx);
+		mlx_terminate(f->mlx);
+	}
 	exit(0);
 }
 

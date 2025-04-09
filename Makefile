@@ -6,6 +6,9 @@ MLX42_DIR   := /mnt/homes/aelbour/MLX42/MLX42
 MLX42_INC   := $(MLX42_DIR)/include
 CFLAGS      := -I$(MLX42_INC) -Imandatory -Ibonus
 
+MAND_HEADERS := mandatory/fractol.h
+BONUS_HEADERS := bonus/fractol_bonus.h
+
 MAND_SRCS   := mandatory/fractol.c \
                mandatory/converting.c \
                mandatory/sstring.c \
@@ -36,7 +39,7 @@ bonus: $(BONUS)
 $(BONUS): $(BONUS_OBJS)
 	$(CC) $(CFLAGS) $(BONUS_OBJS) $(LDFLAGS) -o $(BONUS)
 
-%.o: %.c
+%.o: %.c $(MAND_HEADERS) $(BONUS_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

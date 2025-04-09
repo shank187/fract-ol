@@ -6,7 +6,7 @@
 /*   By: aelbour <aelbour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 16:56:34 by aelbour           #+#    #+#             */
-/*   Updated: 2025/04/08 18:19:52 by aelbour          ###   ########.fr       */
+/*   Updated: 2025/04/09 14:58:39 by aelbour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,15 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-# include <float.h>
-# include <stdio.h>
+# include <stdio.h> 
 # include <math.h>
 # include <MLX42/MLX42.h>
 
-
 # define WRONG_ARG \
-	"Usage: ./fractol <mandelbrot|julia> [real] [imag]\n"
+	"Usage: ./fractol <mandelbrot|burning ship|julia> [real] [imag]\n"
 # define WRONG_FLOAT \
 	"Invalid Float number for JULIA set\n"
+# define DBL_MAX 1.7976931348623157e+308
 
 typedef struct s_complex
 {
@@ -74,7 +73,7 @@ int			is_valid_float(char *s);
 void		render_fractal(t_fractol *f);
 void		key_hook(mlx_key_data_t keydata, void *param);
 void		scroll_hook(double xdelta, double ydelta, void *param);
-void		ft_clean(t_fractol *f, const char *s);
+void		ft_clean(t_fractol *f, char *s);
 
 t_complex	calcul_func(t_fractol *f, t_complex *last, t_complex point);
 void		fractal_suite(t_complex point, t_fractol *f, int x, int y);
